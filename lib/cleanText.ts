@@ -68,56 +68,14 @@ export function cleanText(text: string): string {
   cleaned = cleaned.replace(/[_]{3,}/g, '___');
   cleaned = cleaned.replace(/[=]{3,}/g, '===');
 
-  // 4. Normalize spacing (multiple spaces → single space)
-  cleaned = cleaned.replace(/[ \t]+/g, ' ');
-
-  // 5. Normalize line breaks
+  // Preserve original spacing/indentation and paragraph structure; only normalize line-ending type.
   cleaned = cleaned.replace(/\r\n/g, '\n'); // Windows to Unix
   cleaned = cleaned.replace(/\r/g, '\n'); // Mac to Unix
-  cleaned = cleaned.replace(/\n{3,}/g, '\n\n'); // Max 2 consecutive newlines
 
-  // 6. Strip markdown syntax while preserving text
-  // Remove headers but keep text
-  cleaned = cleaned.replace(/^#{1,6}\s+(.+)$/gm, '$1');
-  
-  // Remove bold/italic markers but keep text
-  cleaned = cleaned.replace(/(\*\*|__)(.*?)\1/g, '$2');
-  cleaned = cleaned.replace(/(\*|_)(.*?)\1/g, '$2');
-  
-  // Remove links but keep text
-  cleaned = cleaned.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
-  
-  // Remove inline code markers but keep text
-  cleaned = cleaned.replace(/`([^`]+)`/g, '$1');
-  
-  // Remove code blocks (multiline)
-  cleaned = cleaned.replace(/```[\s\S]*?```/g, '');
-  
-  // Remove blockquotes
-  cleaned = cleaned.replace(/^>\s+/gm, '');
-  
-  // Remove horizontal rules (already handled by separator collapse, but ensure)
-  cleaned = cleaned.replace(/^[-*_=]{3,}$/gm, '');
-
-  // 7. Normalize bullet points
-  // Convert various bullet styles to standard bullet
-  cleaned = cleaned.replace(/^[\s]*[•◦‣⁃▪▫]\s+/gm, '• ');
-  cleaned = cleaned.replace(/^[\s]*[-]\s+/gm, '• ');
-  cleaned = cleaned.replace(/^[\s]*[*]\s+/gm, '• ');
-  cleaned = cleaned.replace(/^[\s]*[+]\s+/gm, '• ');
-
-  // 8. Remove empty/noise lines
-  cleaned = cleaned.split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0 || line === '•') // Keep bullet-only lines
-    .join('\n');
-
-  // Final cleanup: trim and normalize
-  cleaned = cleaned.trim();
-  
-  // Ensure proper spacing around bullets
-  cleaned = cleaned.replace(/\n•/g, '\n• ');
-  cleaned = cleaned.replace(/•\s{2,}/g, '• ');
+  // Do NOT strip markdown or reflow text; keep headings, lists, and paragraph spacing as written.
+  // Only trim leading/trailing blank lines introduced by removals.
+  cleaned = cleaned.replace(/^\n+/, '');
+  cleaned = cleaned.replace(/\n+$/, '');
 
   return cleaned;
 }
