@@ -19,50 +19,46 @@ export default function Home() {
   const [outputExtended, setOutputExtended] = useState(false);
   const features = [
     {
-      icon: Zap,
-      title: 'Real-Time Processing',
+      icon: FileEdit,
+      title: 'Content Formatting',
       description:
-        'Watch your content transform instantly as you type or paste. No buttons to press, no waiting - just instant, clean results.',
-      color:
-        'text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/20',
+        'Format document with headings, bold, italic, lists, and code blocks—similar to Google Docs. Rich-text editor built in; no account needed.',
+      color: 'text-pink-600 bg-pink-100 dark:text-pink-400 dark:bg-pink-900/20',
+    },
+    {
+      icon: FileText,
+      title: 'Format Document & Export',
+      description:
+        'Export your formatted content as PDF, DOCX, or TXT. Format document once and download in the format you need for reports, articles, or docs.',
+      color: 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20',
     },
     {
       icon: Wand2,
       title: 'AI Content Cleaner',
       description:
-        'Remove all the unnecessary formatting, emojis, and clutter that AI models often add to their responses.',
-      color:
-        'text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-900/20',
+        'Clean AI-generated text in one click: ai text cleaner removes emojis and clutter. Clean ai output from ChatGPT, Claude, or any source.',
+      color: 'text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-900/20',
     },
     {
       icon: Scissors,
-      title: 'Strip Markdown',
+      title: 'Clean Text from Markdown',
       description:
-        'Convert markdown-formatted text to clean, plain text. Remove all asterisks, headers, and formatting symbols.',
+        'Strip markdown and get clean text. Ai text remover for symbols and formatting—then use content formatting to style it your way.',
       color: 'text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20',
     },
     {
       icon: ListChecks,
-      title: 'Normalize Bullet Points',
+      title: 'Structure & Lists',
       description:
-        'Transform paragraphs into organized bullet points. Perfect for creating lists and structured content.',
-      color:
-        'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20',
-    },
-    {
-      icon: FileEdit,
-      title: 'Content Formatting',
-      description:
-        'Use the built-in rich text editor to further format your cleaned content with bold, italic, lists, and more.',
-      color: 'text-pink-600 bg-pink-100 dark:text-pink-400 dark:bg-pink-900/20',
+        'Normalize bullet points and structure. Content formatting for lists and headings so your document looks professional in PDF or DOCX.',
+      color: 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20',
     },
     {
       icon: Sparkles,
       title: 'Privacy-First',
       description:
-        'All processing happens in your browser. Your data never leaves your device - completely private and secure.',
-      color:
-        'text-indigo-600 bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/20',
+        'All content formatting and clean text happens in your browser. Your data never leaves your device—like having Google Docs offline.',
+      color: 'text-indigo-600 bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/20',
     },
   ];
 
@@ -77,47 +73,48 @@ export default function Home() {
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-900 dark:via-gray-900 dark:to-purple-900 py-10 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm mb-6">
-            <Sparkles className="w-4 h-4" />
-            <span>Free AI Content Cleaner Tool</span>
+            <FileText className="w-4 h-4" />
+            <span>Free Content Formatting Tool</span>
           </div>
 
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
-            Clean AI-Generated Content
+            Format Document & Export
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-              Instantly
+              Like Google Docs
             </span>
           </h1>
 
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Remove emojis, strip markdown, and format AI output into clean,
-            professional text. Real-time processing with built-in content
-            formatting tools.
+            Content formatting made simple: rich-text editing, clean text from AI output with our ai content cleaner, and export to PDF, DOCX, or TXT. Format document in one place—no sign-up required.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             <div className="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
-              <Zap className="w-5 h-5 text-yellow-500" />
+              <FileText className="w-5 h-5 text-green-500" />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Real-time cleaning
+                Content formatting
               </span>
             </div>
             <div className="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
-              <FileText className="w-5 h-5 text-green-500" />
+              <Zap className="w-5 h-5 text-yellow-500" />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Format & edit output
+                Format document
               </span>
             </div>
             <div className="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
               <Sparkles className="w-5 h-5 text-purple-500" />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Privacy-first
+                Export PDF, DOCX, TXT
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 pt-6 pb-10">
+      <section className="max-w-7xl mx-auto px-4 pt-6 pb-10" aria-labelledby="format-document-heading">
+        <h2 id="format-document-heading" className="sr-only">
+          Content formatting tool: format document and export to PDF, DOCX, TXT. Ai content cleaner for clean text.
+        </h2>
         <div
           className="tool-grid mb-8 min-w-0"
           style={
@@ -147,12 +144,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Powerful Features for Clean Content
+              Content Formatting & Export—All in One Place
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Everything you need to transform messy AI outputs into
-              professional, clean text. Perfect for content creators, writers,
-              and anyone working with AI tools.
+              Format document with rich text, clean text from AI with our ai content cleaner, and export to PDF, DOCX, or TXT. No sign-up—like a free, private Google Docs for formatting and export.
             </p>
           </div>
 
@@ -180,7 +175,7 @@ export default function Home() {
           <div className="mt-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
             <div className="max-w-3xl mx-auto text-center">
               <h3 className="text-3xl font-bold mb-4">
-                How to Use AI Content Cleaner
+                How to Format Document & Export
               </h3>
               <div className="space-y-4 text-left text-white/90">
                 <div className="flex gap-4">
@@ -188,9 +183,8 @@ export default function Home() {
                     1
                   </div>
                   <p>
-                    <strong className="text-white">Paste your content:</strong>{' '}
-                    Copy any AI-generated text from ChatGPT, Claude, Gemini, or
-                    any other AI tool and paste it into the input box.
+                    <strong className="text-white">Paste or type:</strong> Add
+                    your text—from AI (we’ll clean text with our ai content cleaner), from notes, or from anywhere. Paste into the input box.
                   </p>
                 </div>
                 <div className="flex gap-4">
@@ -198,9 +192,9 @@ export default function Home() {
                     2
                   </div>
                   <p>
-                    <strong className="text-white">Automatic cleaning:</strong>{' '}
-                    Watch as your content is automatically cleaned - emojis
-                    removed, markdown stripped, and formatting normalized.
+                    <strong className="text-white">Content formatting:</strong> Use
+                    the editor to format document: headings, bold, italic, lists,
+                    code. Clean ai clutter is removed automatically so you get clean text.
                   </p>
                 </div>
                 <div className="flex gap-4">
@@ -208,9 +202,8 @@ export default function Home() {
                     3
                   </div>
                   <p>
-                    <strong className="text-white">Edit & format:</strong> Use
-                    the rich text editor toolbar to further format your cleaned
-                    content. Add bold, italic, lists, and more.
+                    <strong className="text-white">Format document:</strong> Adjust
+                    structure and style like in Google Docs. No account needed—content formatting happens right in your browser.
                   </p>
                 </div>
                 <div className="flex gap-4">
@@ -218,9 +211,8 @@ export default function Home() {
                     4
                   </div>
                   <p>
-                    <strong className="text-white">Copy or export:</strong> Copy
-                    your formatted content or export it as PDF, DOCX, or TXT
-                    file.
+                    <strong className="text-white">Export:</strong> Download your
+                    document as PDF, DOCX, or TXT. Format document once and export in the format you need.
                   </p>
                 </div>
               </div>
@@ -234,46 +226,40 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="w-6 h-6 text-blue-400" />
-                <span className="text-xl font-bold">AI Cleaner</span>
+                <FileText className="w-6 h-6 text-blue-400" />
+                <span className="text-xl font-bold">Content Formatting Tool</span>
               </div>
               <p className="text-gray-400 leading-relaxed">
-                The best free tool to clean, format, and polish AI-generated
-                content. Transform messy AI outputs into professional text
-                instantly.
+                Format document and export to PDF, DOCX, or TXT. Content formatting like Google Docs, plus ai content cleaner to clean text from AI—free and private.
               </p>
             </div>
 
             <div>
               <h4 className="font-semibold mb-4">Features</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>AI Content Cleaner</li>
-                <li>AI Text Cleaner</li>
-                <li>Remove Emojis</li>
-                <li>Strip Markdown</li>
-                <li>Content Formatting</li>
-                <li>Document Formatter</li>
+                <li>Content formatting</li>
+                <li>Format document</li>
+                <li>Export PDF, DOCX, TXT</li>
+                <li>AI content cleaner</li>
+                <li>AI text cleaner / clean text</li>
+                <li>Google Docs–style editor</li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-semibold mb-4">About</h4>
               <p className="text-gray-400 leading-relaxed">
-                This tool helps you clean text from ChatGPT, Claude, Gemini, and
-                other AI assistants. All processing happens in your browser -
-                your data never leaves your device.
+                Free content formatting tool to format document and export. Clean ai text with our ai text remover, then use content formatting and download in your preferred format. No sign-up; runs in your browser.
               </p>
             </div>
           </div>
 
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
             <p>
-              © 2026 AI Content Cleaner. Free tool for cleaning AI-generated
-              text.
+              © 2026 Content Formatting Tool. Format document, clean text, export PDF DOCX TXT.
             </p>
             <p className="mt-2 text-sm">
-              Keywords: ai cleaner, ai content cleaner, ai text cleaner, ai text
-              remover, clean ai, clean text, content formatting, format document
+              ai cleaner, ai content cleaner, ai text cleaner, ai text remover, clean ai, clean text, content formatting, format document, google docs
             </p>
           </div>
         </div>

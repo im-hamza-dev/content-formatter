@@ -1,12 +1,12 @@
-# AI Content Cleaner & Formatter
+# Content Formatting Tool
 
-A fast, privacy-friendly Next.js web application that allows users to clean and format AI-generated content using deterministic, rule-based text processing (NO AI APIs).
+A free content formatting tool (like Google Docs) to format document with rich text, clean AI-generated text via a built-in ai content cleaner, and export to PDF, DOCX, or TXT. No sign-up; runs in the browser.
 
 ## Features
 
-- **Rule-Based Content Cleaning**: Remove emojis, decorative symbols, normalize spacing, strip markdown, and more
-- **Rich Text Formatting**: Built-in Quill editor with formatting toolbar (bold, italic, headings, lists, code blocks)
-- **Export Options**: Export cleaned content as PDF, DOCX, or TXT
+- **Content Formatting**: Format document with headings, bold, italic, lists, code blocks—rich-text editor built in
+- **Export**: Export formatted document as PDF, DOCX, or TXT
+- **AI Content Cleaner**: Clean text from AI (ai text cleaner / ai text remover)—emojis, markdown stripped, structure kept
 - **Dark/Light Theme**: Full theme support with next-themes
 - **Privacy-First**: All processing happens client-side - your data never leaves your device
 - **Mobile Responsive**: Fully responsive design that works on all devices
@@ -97,14 +97,10 @@ npm start
 ## SEO Keywords
 
 This app is optimized for:
-- ai cleaner
-- ai content cleaner
-- ai text cleaner
-- ai text remover
-- clean ai
-- clean text
-- content formatting
-- format document
+- ai cleaner, ai content cleaner, ai text cleaner, ai text remover
+- clean ai, clean text
+- content formatting, format document
+- google docs
 
 ## License
 

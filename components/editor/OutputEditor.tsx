@@ -43,10 +43,10 @@ export function OutputEditor({
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 px-5 py-3.5 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between gap-2 shrink-0">
         <div>
           <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-            Output: Cleaned Content
+            Output: Format document & export
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Edit with formatting tools
+            Content formatting toolbar — then export PDF, DOCX, or TXT
           </p>
         </div>
         {onExtendedChange && (
@@ -73,7 +73,7 @@ export function OutputEditor({
             onChange={setFormattedContent}
             modules={modules}
             formats={formats}
-            placeholder="Your cleaned content will appear here..."
+            placeholder="Formatted document will appear here. Use the toolbar to format document, then export."
             className="min-h-[420px]"
           />
         </div>
