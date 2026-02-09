@@ -1,8 +1,5 @@
 import { useContentStore } from '@/store/contentStore';
 
-/**
- * Hook for content cleaning operations
- */
 export function useContentCleaner() {
   const {
     rawInput,

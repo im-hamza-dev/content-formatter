@@ -1,9 +1,3 @@
-/**
- * Rule-based text cleaner
- * Applies deterministic cleaning rules in order
- * NO AI APIs - all processing is local and rule-based
- */
-
 export function cleanText(text: string): string {
   if (!text || typeof text !== 'string') {
     return '';
@@ -11,7 +5,6 @@ export function cleanText(text: string): string {
 
   let cleaned = text;
 
-  // 1. Remove emojis (Unicode ranges)
   cleaned = cleaned.replace(/[\u{1F600}-\u{1F64F}]/gu, ''); // Emoticons
   cleaned = cleaned.replace(/[\u{1F300}-\u{1F5FF}]/gu, ''); // Misc Symbols and Pictographs
   cleaned = cleaned.replace(/[\u{1F680}-\u{1F6FF}]/gu, ''); // Transport and Map
@@ -55,25 +48,20 @@ export function cleanText(text: string): string {
   cleaned = cleaned.replace(/[\u{2B50}]/gu, ''); // White Star
   cleaned = cleaned.replace(/[\u{2B55}]/gu, ''); // Heavy Large Circle
 
-  // 2. Remove decorative symbols/icons
   cleaned = cleaned.replace(/[★☆✦✧✩✪✫✬✭✮✯✰]/g, ''); // Stars
   cleaned = cleaned.replace(/[◆◇◈◉◊○●]/g, ''); // Shapes
   cleaned = cleaned.replace(/[→←↑↓↔]/g, ''); // Arrows
   cleaned = cleaned.replace(/[✓✔✗✘]/g, ''); // Checkmarks
   cleaned = cleaned.replace(/[•◦‣⁃▪▫]/g, ''); // Bullets (will normalize later)
 
-  // 3. Collapse repeated separators (---, ***, ___)
   cleaned = cleaned.replace(/[-]{3,}/g, '---');
   cleaned = cleaned.replace(/[*]{3,}/g, '***');
   cleaned = cleaned.replace(/[_]{3,}/g, '___');
   cleaned = cleaned.replace(/[=]{3,}/g, '===');
 
-  // Preserve original spacing/indentation and paragraph structure; only normalize line-ending type.
   cleaned = cleaned.replace(/\r\n/g, '\n'); // Windows to Unix
   cleaned = cleaned.replace(/\r/g, '\n'); // Mac to Unix
 
-  // Do NOT strip markdown or reflow text; keep headings, lists, and paragraph spacing as written.
-  // Only trim leading/trailing blank lines introduced by removals.
   cleaned = cleaned.replace(/^\n+/, '');
   cleaned = cleaned.replace(/\n+$/, '');
 
