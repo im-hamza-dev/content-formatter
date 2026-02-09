@@ -8,12 +8,39 @@ import html2canvas from 'html2canvas';
  */
 
 /**
- * Convert HTML to plain text
+ * Convert HTML to plain text (collapsed, no structure)
  */
 function htmlToPlainText(html: string): string {
   const tmp = document.createElement('div');
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || '';
+}
+
+const BLOCK_TAGS = new Set(['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'PRE', 'TR', 'HR', 'BLOCKQUOTE']);
+
+/**
+ * Convert HTML to plain text while preserving line/paragraph breaks so DOCX export keeps structure.
+ * Inserts newlines after <br> and after block elements (p, div, h1, etc.).
+ */
+function htmlToPlainTextWithBreaks(html: string): string {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  function walk(node: Node): string {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent || '';
+    if (node.nodeType !== Node.ELEMENT_NODE) return '';
+    const el = node as HTMLElement;
+    const tag = el.tagName;
+    if (tag === 'BR') return '\n';
+    let s = '';
+    for (const child of el.childNodes) s += walk(child);
+    if (BLOCK_TAGS.has(tag) && s) s += '\n';
+    return s;
+  }
+
+  let out = '';
+  for (const child of div.childNodes) out += walk(child);
+  return out.replace(/\n{3,}/g, '\n\n').trim();
 }
 
 /**
@@ -210,12 +237,14 @@ export async function exportAsPDF(content: string, filename: string = 'cleaned-c
  */
 export async function exportAsDOCX(content: string, filename: string = 'cleaned-content.docx'): Promise<void> {
   try {
-    const plainText = htmlToPlainText(content);
-    const paragraphs = plainText.split('\n').map(line => 
-      new Paragraph({
-        children: [new TextRun(line.trim() || ' ')],
-      })
-    );
+    const plainText = htmlToPlainTextWithBreaks(content);
+    const paragraphs = plainText.split('\n').map((line) => {
+      // Preserve spaces; use non-breaking space for empty lines so paragraph still renders
+      const text = line || ' ';
+      return new Paragraph({
+        children: [new TextRun({ text })],
+      });
+    });
     
     const doc = new Document({
       sections: [{
