@@ -1,7 +1,24 @@
-import { Document, Packer, Paragraph, TextRun } from 'docx';
+import {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  HeadingLevel,
+  LevelFormat,
+  Numbering,
+} from 'docx';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+
+/** Docx run options for a single segment (bold/italic/underline + text or break) */
+interface RunSpec {
+  text?: string;
+  break?: number;
+  bold?: boolean;
+  italics?: boolean;
+  underline?: { type?: string };
+}
 
 /**
  * Export utilities for PDF, DOCX, and TXT formats
@@ -41,6 +58,177 @@ function htmlToPlainTextWithBreaks(html: string): string {
   let out = '';
   for (const child of div.childNodes) out += walk(child);
   return out.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+const HEADING_LEVELS: Record<string, keyof typeof HeadingLevel> = {
+  H1: 'HEADING_1',
+  H2: 'HEADING_2',
+  H3: 'HEADING_3',
+  H4: 'HEADING_4',
+  H5: 'HEADING_5',
+  H6: 'HEADING_6',
+};
+
+/**
+ * Collect inline runs (text + bold/italic/underline, or line break) from a DOM node.
+ * Used for paragraph content.
+ */
+function collectRuns(node: Node, format: { bold?: boolean; italics?: boolean; underline?: boolean } = {}): RunSpec[] {
+  const out: RunSpec[] = [];
+  function run(node: Node, f: typeof format) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent || '';
+      if (text) out.push({ ...f, text });
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+    const el = node as HTMLElement;
+    const tag = el.tagName;
+    if (tag === 'BR') {
+      out.push({ break: 1 });
+      return;
+    }
+    const next = { ...f };
+    if (tag === 'STRONG' || tag === 'B') next.bold = true;
+    else if (tag === 'EM' || tag === 'I') next.italics = true;
+    else if (tag === 'U') next.underline = true;
+    for (const child of el.childNodes) run(child, next);
+  }
+  run(node, format);
+  return out;
+}
+
+/** Merge adjacent RunSpecs that only differ by text (so we don't split every character). */
+function mergeRuns(specs: RunSpec[]): RunSpec[] {
+  const merged: RunSpec[] = [];
+  for (const s of specs) {
+    if (s.break !== undefined) {
+      merged.push(s);
+      continue;
+    }
+    const last = merged[merged.length - 1];
+    if (
+      last &&
+      last.text !== undefined &&
+      s.text !== undefined &&
+      last.bold === s.bold &&
+      last.italics === s.italics &&
+      last.underline === s.underline
+    ) {
+      last.text = (last.text || '') + (s.text || '');
+    } else {
+      merged.push({ ...s });
+    }
+  }
+  return merged;
+}
+
+function runsToParagraphChildren(specs: RunSpec[]) {
+  return mergeRuns(specs).map((s) => {
+    if (s.break) return new TextRun({ break: s.break });
+    return new TextRun({
+      text: s.text || ' ',
+      bold: s.bold,
+      italics: s.italics,
+      underline: s.underline ? {} : undefined,
+    });
+  });
+}
+
+/**
+ * Convert Quill HTML to docx Paragraph[] and optional numbering config.
+ * Preserves paragraphs, line breaks, bold, italic, underline, headings, bullet and numbered lists.
+ */
+function htmlToDocxBlocks(html: string): { paragraphs: Paragraph[]; numbering?: { config: Array<{ reference: string; levels: Array<{ level: number; format: string }> }> } } {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  const paragraphs: Paragraph[] = [];
+  let hasNumberedList = false;
+
+  function blockToParagraph(block: Element, opts: { bullet?: boolean; numbering?: boolean; heading?: keyof typeof HeadingLevel } = {}) {
+    const runs = collectRuns(block);
+    const children = runsToParagraphChildren(runs);
+    const paraOpts: Parameters<typeof Paragraph>[0] = {
+      children: children.length ? children : [new TextRun({ text: ' ' })],
+    };
+    if (opts.heading) paraOpts.heading = HeadingLevel[opts.heading];
+    if (opts.bullet) paraOpts.bullet = { level: 0 };
+    if (opts.numbering) {
+      hasNumberedList = true;
+      paraOpts.numbering = { reference: 'decimal', level: 0 };
+    }
+    return new Paragraph(paraOpts);
+  }
+
+  /** Quill may use <ol data-list="bullet"> or class ql-bullet for bullet lists; standard HTML uses <ul>/<ol>. */
+  function isBulletList(el: Element): boolean {
+    const listType = el.getAttribute?.('data-list') ?? el.getAttribute?.('data-list-type');
+    if (listType === 'bullet') return true;
+    if (listType === 'ordered') return false;
+    const cls = (el.getAttribute?.('class') ?? '').toLowerCase();
+    if (cls.includes('ql-bullet')) return true;
+    if (cls.includes('ql-indent') && !cls.includes('ordered')) return true;
+    return el.tagName === 'UL';
+  }
+
+  function processNode(node: Node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const t = (node.textContent || '').trim();
+      if (t) paragraphs.push(new Paragraph({ children: [new TextRun({ text: t })] }));
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+    const el = node as HTMLElement;
+    const tag = el.tagName;
+    if (tag === 'UL' || tag === 'OL') {
+      const bullet = isBulletList(el);
+      el.querySelectorAll(':scope > li').forEach((li) =>
+        paragraphs.push(blockToParagraph(li, bullet ? { bullet: true } : { numbering: true }))
+      );
+      return;
+    }
+    if (tag === 'DIV') {
+      el.childNodes.forEach((c) => processNode(c));
+      return;
+    }
+    if (tag === 'P' || tag === 'PRE' || tag === 'BLOCKQUOTE') {
+      paragraphs.push(blockToParagraph(el));
+      return;
+    }
+    if (HEADING_LEVELS[tag]) {
+      paragraphs.push(blockToParagraph(el, { heading: HEADING_LEVELS[tag] }));
+      return;
+    }
+    if (tag === 'LI') {
+      const list = el.closest('ul') ?? el.closest('ol');
+      if (list) {
+        const bullet = isBulletList(list);
+        paragraphs.push(blockToParagraph(el, bullet ? { bullet: true } : { numbering: true }));
+      } else {
+        paragraphs.push(blockToParagraph(el));
+      }
+    }
+  }
+
+  for (const child of div.childNodes) processNode(child);
+
+  // If we only have block elements that don't expose direct children (e.g. raw text), fallback: treat whole as one block
+  if (paragraphs.length === 0 && div.textContent?.trim()) {
+    paragraphs.push(blockToParagraph(div));
+  }
+
+  const numbering = hasNumberedList
+    ? {
+        config: [
+          {
+            reference: 'decimal',
+            levels: [{ level: 0, format: LevelFormat.DECIMAL }],
+          },
+        ],
+      }
+    : undefined;
+
+  return { paragraphs, numbering };
 }
 
 /**
@@ -237,21 +425,15 @@ export async function exportAsPDF(content: string, filename: string = 'cleaned-c
  */
 export async function exportAsDOCX(content: string, filename: string = 'cleaned-content.docx'): Promise<void> {
   try {
-    const plainText = htmlToPlainTextWithBreaks(content);
-    const paragraphs = plainText.split('\n').map((line) => {
-      // Preserve spaces; use non-breaking space for empty lines so paragraph still renders
-      const text = line || ' ';
-      return new Paragraph({
-        children: [new TextRun({ text })],
-      });
-    });
-    
+    const { paragraphs, numbering } = htmlToDocxBlocks(content);
     const doc = new Document({
-      sections: [{
-        children: paragraphs,
-      }],
+      numbering,
+      sections: [
+        {
+          children: paragraphs.length ? paragraphs : [new Paragraph({ children: [new TextRun({ text: ' ' })] })],
+        },
+      ],
     });
-    
     const blob = await Packer.toBlob(doc);
     saveAs(blob, filename);
   } catch (error) {

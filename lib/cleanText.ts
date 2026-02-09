@@ -53,6 +53,7 @@ export function cleanText(text: string): string {
   cleaned = cleaned.replace(/[→←↑↓↔]/g, ''); // Arrows
   cleaned = cleaned.replace(/[✓✔✗✘]/g, ''); // Checkmarks
   cleaned = cleaned.replace(/[•◦‣⁃▪▫]/g, ''); // Bullets (will normalize later)
+  cleaned = cleaned.replace(/\u2014/g, ' '); // Em dash — → space
 
   cleaned = cleaned.replace(/[-]{3,}/g, '---');
   cleaned = cleaned.replace(/[*]{3,}/g, '***');

@@ -22,7 +22,7 @@ export default function Home() {
       icon: FileEdit,
       title: 'Content Formatting',
       description:
-        'Format document with headings, bold, italic, lists, and code blocks—similar to Google Docs. Rich-text editor built in; no account needed.',
+        'Format document with headings, bold, italic, lists, and code blocks similar to Google Docs. Rich-text editor built in; no account needed.',
       color: 'text-pink-600 bg-pink-100 dark:text-pink-400 dark:bg-pink-900/20',
     },
     {
@@ -30,20 +30,22 @@ export default function Home() {
       title: 'Format Document & Export',
       description:
         'Export your formatted content as PDF, DOCX, or TXT. Format document once and download in the format you need for reports, articles, or docs.',
-      color: 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20',
+      color:
+        'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20',
     },
     {
       icon: Wand2,
       title: 'AI Content Cleaner',
       description:
         'Clean AI-generated text in one click: ai text cleaner removes emojis and clutter. Clean ai output from ChatGPT, Claude, or any source.',
-      color: 'text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-900/20',
+      color:
+        'text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-900/20',
     },
     {
       icon: Scissors,
       title: 'Clean Text from Markdown',
       description:
-        'Strip markdown and get clean text. Ai text remover for symbols and formatting—then use content formatting to style it your way.',
+        'Strip markdown and get clean text. Ai text remover for symbols and formatting then use content formatting to style it your way.',
       color: 'text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20',
     },
     {
@@ -51,14 +53,16 @@ export default function Home() {
       title: 'Structure & Lists',
       description:
         'Normalize bullet points and structure. Content formatting for lists and headings so your document looks professional in PDF or DOCX.',
-      color: 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20',
+      color:
+        'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20',
     },
     {
       icon: Sparkles,
       title: 'Privacy-First',
       description:
-        'All content formatting and clean text happens in your browser. Your data never leaves your device—like having Google Docs offline.',
-      color: 'text-indigo-600 bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/20',
+        'All content formatting and clean text happens in your browser. Your data never leaves your device like having Google Docs offline.',
+      color:
+        'text-indigo-600 bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/20',
     },
   ];
 
@@ -85,7 +89,9 @@ export default function Home() {
           </h1>
 
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Content formatting made simple: rich-text editing, clean text from AI output with our ai content cleaner, and export to PDF, DOCX, or TXT. Format document in one place—no sign-up required.
+            Content formatting made simple: rich-text editing, clean text from
+            AI output with our ai content cleaner, and export to PDF, DOCX, or
+            TXT. Format document in one place no sign-up required.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-12">
@@ -111,9 +117,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 pt-6 pb-10" aria-labelledby="format-document-heading">
+      <section
+        className="max-w-7xl mx-auto px-4 pt-6 pb-10"
+        aria-labelledby="format-document-heading"
+      >
         <h2 id="format-document-heading" className="sr-only">
-          Content formatting tool: format document and export to PDF, DOCX, TXT. Ai content cleaner for clean text.
+          Content formatting tool: format document and export to PDF, DOCX, TXT.
+          Ai content cleaner for clean text.
         </h2>
         <div
           className="tool-grid mb-8 min-w-0"
@@ -144,10 +154,12 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Content Formatting & Export—All in One Place
+              Content Formatting & Export All in One Place
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Format document with rich text, clean text from AI with our ai content cleaner, and export to PDF, DOCX, or TXT. No sign-up—like a free, private Google Docs for formatting and export.
+              Format document with rich text, clean text from AI with our ai
+              content cleaner, and export to PDF, DOCX, or TXT. No sign-up like
+              a free, private Google Docs for formatting and export.
             </p>
           </div>
 
@@ -184,7 +196,9 @@ export default function Home() {
                   </div>
                   <p>
                     <strong className="text-white">Paste or type:</strong> Add
-                    your text—from AI (we’ll clean text with our ai content cleaner), from notes, or from anywhere. Paste into the input box.
+                    your text from AI (we’ll clean text with our ai content
+                    cleaner), from notes, or from anywhere. Paste into the input
+                    box.
                   </p>
                 </div>
                 <div className="flex gap-4">
@@ -192,9 +206,10 @@ export default function Home() {
                     2
                   </div>
                   <p>
-                    <strong className="text-white">Content formatting:</strong> Use
-                    the editor to format document: headings, bold, italic, lists,
-                    code. Clean ai clutter is removed automatically so you get clean text.
+                    <strong className="text-white">Content formatting:</strong>{' '}
+                    Use the editor to format document: headings, bold, italic,
+                    lists, code. Clean ai clutter is removed automatically so
+                    you get clean text.
                   </p>
                 </div>
                 <div className="flex gap-4">
@@ -202,8 +217,9 @@ export default function Home() {
                     3
                   </div>
                   <p>
-                    <strong className="text-white">Format document:</strong> Adjust
-                    structure and style like in Google Docs. No account needed—content formatting happens right in your browser.
+                    <strong className="text-white">Format document:</strong>{' '}
+                    Adjust structure and style like in Google Docs. No account
+                    needed content formatting happens right in your browser.
                   </p>
                 </div>
                 <div className="flex gap-4">
@@ -211,8 +227,9 @@ export default function Home() {
                     4
                   </div>
                   <p>
-                    <strong className="text-white">Export:</strong> Download your
-                    document as PDF, DOCX, or TXT. Format document once and export in the format you need.
+                    <strong className="text-white">Export:</strong> Download
+                    your document as PDF, DOCX, or TXT. Format document once and
+                    export in the format you need.
                   </p>
                 </div>
               </div>
@@ -227,10 +244,14 @@ export default function Home() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <FileText className="w-6 h-6 text-blue-400" />
-                <span className="text-xl font-bold">Content Formatting Tool</span>
+                <span className="text-xl font-bold">
+                  Content Formatting Tool
+                </span>
               </div>
               <p className="text-gray-400 leading-relaxed">
-                Format document and export to PDF, DOCX, or TXT. Content formatting like Google Docs, plus ai content cleaner to clean text from AI—free and private.
+                Format document and export to PDF, DOCX, or TXT. Content
+                formatting like Google Docs, plus ai content cleaner to clean
+                text from AI free and private.
               </p>
             </div>
 
@@ -249,17 +270,23 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">About</h4>
               <p className="text-gray-400 leading-relaxed">
-                Free content formatting tool to format document and export. Clean ai text with our ai text remover, then use content formatting and download in your preferred format. No sign-up; runs in your browser.
+                Free content formatting tool to format document and export.
+                Clean ai text with our ai text remover, then use content
+                formatting and download in your preferred format. No sign-up;
+                runs in your browser.
               </p>
             </div>
           </div>
 
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
             <p>
-              © 2026 Content Formatting Tool. Format document, clean text, export PDF DOCX TXT.
+              © 2026 Content Formatting Tool. Format document, clean text,
+              export PDF DOCX TXT.
             </p>
             <p className="mt-2 text-sm">
-              ai cleaner, ai content cleaner, ai text cleaner, ai text remover, clean ai, clean text, content formatting, format document, google docs
+              ai cleaner, ai content cleaner, ai text cleaner, ai text remover,
+              clean ai, clean text, content formatting, format document, google
+              docs
             </p>
           </div>
         </div>

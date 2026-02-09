@@ -46,7 +46,7 @@ export function OutputEditor({
             Output: Format document & export
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Content formatting toolbar — then export PDF, DOCX, or TXT
+            Content formatting toolbar then export PDF, DOCX, or TXT
           </p>
         </div>
         {onExtendedChange && (
