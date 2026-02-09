@@ -74,7 +74,7 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-900 dark:via-gray-900 dark:to-purple-900 py-20 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-900 dark:via-gray-900 dark:to-purple-900 py-10 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm mb-6">
             <Sparkles className="w-4 h-4" />
@@ -117,13 +117,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-16">
+      <section className="max-w-7xl mx-auto px-4 pt-6 pb-10">
         <div
           className="tool-grid mb-8 min-w-0"
           style={
             {
-              '--tool-col-a': outputExtended ? '30fr' : '1fr',
-              '--tool-col-b': outputExtended ? '70fr' : '1fr',
+              '--tool-col-a': outputExtended ? '30fr' : '40fr',
+              '--tool-col-b': outputExtended ? '70fr' : '60fr',
             } as React.CSSProperties
           }
         >

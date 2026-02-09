@@ -39,8 +39,8 @@ export function OutputEditor({
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden h-full flex flex-col">
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between gap-2 shrink-0">
+    <div className="tool-card-glow bg-white dark:bg-gray-800 rounded-2xl border border-blue-200/50 dark:border-blue-500/20 overflow-hidden h-full flex flex-col">
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 px-5 py-3.5 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between gap-2 shrink-0">
         <div>
           <h3 className="font-semibold text-gray-900 dark:text-gray-100">
             Output: Cleaned Content
@@ -65,7 +65,7 @@ export function OutputEditor({
           </button>
         )}
       </div>
-      <div className="p-4 flex-1 min-h-0 flex flex-col">
+      <div className="p-5 flex-1 min-h-0 flex flex-col">
         <div className="quill-wrapper flex-1 min-h-0 flex flex-col">
           <ReactQuill
             theme="snow"
@@ -74,7 +74,7 @@ export function OutputEditor({
             modules={modules}
             formats={formats}
             placeholder="Your cleaned content will appear here..."
-            className="h-80"
+            className="min-h-[420px]"
           />
         </div>
       </div>
