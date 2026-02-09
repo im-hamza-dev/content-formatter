@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Sparkles,
   Zap,
@@ -15,6 +16,7 @@ import { ExportActions } from '@/components/actions/ExportActions';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Home() {
+  const [outputExtended, setOutputExtended] = useState(false);
   const features = [
     {
       icon: Zap,
@@ -116,19 +118,24 @@ export default function Home() {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            AI Text Cleaner & Formatter
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Paste your AI-generated content below and watch it transform in
-            real-time. Edit the output with our built-in formatting tools.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <InputBox />
-          <OutputEditor />
+        <div
+          className="tool-grid mb-8 min-w-0"
+          style={
+            {
+              '--tool-col-a': outputExtended ? '30fr' : '1fr',
+              '--tool-col-b': outputExtended ? '70fr' : '1fr',
+            } as React.CSSProperties
+          }
+        >
+          <div className="min-w-0">
+            <InputBox />
+          </div>
+          <div className="min-w-0">
+            <OutputEditor
+              extended={outputExtended}
+              onExtendedChange={setOutputExtended}
+            />
+          </div>
         </div>
 
         <div className="mb-16">

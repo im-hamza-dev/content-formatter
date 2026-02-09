@@ -101,3 +101,15 @@
 .dark .quill-wrapper .ql-editor.ql-blank::before {
   color: var(--color-gray-600);
 }
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .tool-grid {
+    grid-template-columns: var(--tool-col-a, 1fr) var(--tool-col-b, 1fr);
+    transition: grid-template-columns 0.35s ease-in-out;
+  }
+}
