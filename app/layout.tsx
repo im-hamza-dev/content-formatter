@@ -2,16 +2,52 @@ import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import './globals.css';
 
-export const metadata: Metadata = {
-  title: 'Content Formatting Tool – Format & Export Documents | PDF, DOCX, TXT',
-  description: 'Free content formatting tool like Google Docs. Format documents with rich text, clean AI-generated text with our ai content cleaner, and export to PDF, DOCX, or TXT. Clean text, format document, and download in seconds.',
-  keywords: 'ai cleaner, ai content cleaner, ai text cleaner, ai text remover, clean ai, clean text, content formatting, format document, google docs',
-  openGraph: {
-    title: 'Content Formatting Tool – Format & Export Documents',
-    description: 'Format documents with rich text, clean AI text, and export to PDF, DOCX, or TXT. Free content formatting tool.',
-    type: 'website',
-  },
-};
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://contentformatter.com';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title =
+    'AI Text Cleaner & Formatter | Clean, Beautify & Export Text Online';
+  const description =
+    'Free AI content cleaner and text formatter online. Clean AI-generated text, beautify text, and format documents easily. Export to PDF, DOCX, and TXT. No sign-up required.';
+  const keywords =
+    'ai cleaner, ai content cleaner, ai text cleaner, text formatter online, beautify text, format document';
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title,
+    description,
+    keywords,
+    icons: {
+      icon: '/contentformatter.png',
+      apple: '/contentformatter.png',
+    },
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: '/',
+      siteName: 'AI Text Cleaner & Formatter',
+      images: [
+        {
+          url: '/contentformatter.png',
+          width: 512,
+          height: 512,
+          alt: 'AI Text Cleaner & Formatter',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/contentformatter.png'],
+    },
+    alternates: {
+      canonical: '/',
+    },
+  };
+}
 
 export default function RootLayout({
   children,
@@ -21,9 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
