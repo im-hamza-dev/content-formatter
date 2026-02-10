@@ -66,11 +66,11 @@ export function HomeContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <div className="sticky top-0 z-50 max-w-7xl mx-auto px-4 py-4 flex justify-end">
+      <div className="fixed top-0 z-50 max-w-7xl mx-auto px-4 py-4 flex justify-end right-0">
         <ThemeToggle />
       </div>
 
-      <header className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-900 dark:via-gray-900 dark:to-purple-900 py-1 px-4">
+      <header className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-900 dark:via-gray-900 dark:to-purple-900 py-1 px-4 pt-12">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm mb-6">
             <FileText className="w-4 h-4" />
