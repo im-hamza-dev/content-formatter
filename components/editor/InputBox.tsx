@@ -8,8 +8,12 @@ export function InputBox() {
   return (
     <div className="tool-card-glow bg-white dark:bg-gray-800 rounded-2xl border border-blue-200/50 dark:border-blue-500/20 overflow-hidden h-full flex flex-col">
       <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 px-5 py-3.5 border-b border-gray-200 dark:border-gray-700 shrink-0">
-        <h3 className="font-semibold text-gray-900 dark:text-gray-100">Input: Paste or type your text</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400">We’ll clean text from AI and you can format document below</p>
+        <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+          Input: Paste or type your text
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          We’ll clean text from AI and you can format document below
+        </p>
       </div>
       <div className="p-5 flex-1 min-h-0 flex flex-col">
         <textarea

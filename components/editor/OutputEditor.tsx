@@ -1,11 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { PanelRightOpen, PanelLeftClose } from 'lucide-react';
+import { PanelRightOpen, PanelLeftClose, Sparkles } from 'lucide-react';
 import { useContentStore } from '@/store/contentStore';
 import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
+function stripHtmlToText(html: string): string {
+  if (typeof document === 'undefined') return html.replace(/<[^>]*>/g, ' ');
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  return (div.textContent || div.innerText || '').trim();
+}
 
 interface OutputEditorProps {
   extended?: boolean;
@@ -16,7 +24,33 @@ export function OutputEditor({
   extended = false,
   onExtendedChange,
 }: OutputEditorProps) {
-  const { formattedContent, setFormattedContent } = useContentStore();
+  const { formattedContent, setFormattedContent, cleanedContent } = useContentStore();
+  const [formatting, setFormatting] = useState(false);
+  const [formatError, setFormatError] = useState<string | null>(null);
+
+  const handleFormatContent = async () => {
+    const contentToFormat = cleanedContent?.trim() || stripHtmlToText(formattedContent);
+    if (!contentToFormat) {
+      setFormatError('Add or paste content in the input box first, then click Format Content.');
+      return;
+    }
+    setFormatError(null);
+    setFormatting(true);
+    try {
+      const res = await fetch('/api/format', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: contentToFormat }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || 'Format failed');
+      if (data.formatted) setFormattedContent(data.formatted);
+    } catch (e) {
+      setFormatError(e instanceof Error ? e.message : 'Format request failed.');
+    } finally {
+      setFormatting(false);
+    }
+  };
 
   const modules = {
     toolbar: [
@@ -65,7 +99,24 @@ export function OutputEditor({
           </button>
         )}
       </div>
-      <div className="p-5 flex-1 min-h-0 flex flex-col">
+      <div className="px-5 pb-2 flex flex-col gap-2">
+        <button
+          type="button"
+          onClick={handleFormatContent}
+          disabled={formatting}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium text-sm shadow-sm hover:from-blue-700 hover:to-purple-700 disabled:opacity-60 disabled:pointer-events-none transition-all"
+          title="Format content with AI (Gemini)"
+        >
+          <Sparkles className="w-4 h-4" />
+          {formatting ? 'Formatting…' : 'Format Content'}
+        </button>
+        {formatError && (
+          <p className="text-sm text-red-600 dark:text-red-400" role="alert">
+            {formatError}
+          </p>
+        )}
+      </div>
+      <div className="p-5 flex-1 min-h-0 flex flex-col pt-0">
         <div className="quill-wrapper flex-1 min-h-0 flex flex-col">
           <ReactQuill
             theme="snow"
