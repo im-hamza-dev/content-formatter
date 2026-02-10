@@ -5,7 +5,7 @@ import {
   TextRun,
   HeadingLevel,
   LevelFormat,
-  Numbering,
+  type INumberingOptions,
 } from 'docx';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
@@ -73,12 +73,23 @@ const HEADING_LEVELS: Record<string, keyof typeof HeadingLevel> = {
  * Collect inline runs (text + bold/italic/underline, or line break) from a DOM node.
  * Used for paragraph content.
  */
-function collectRuns(node: Node, format: { bold?: boolean; italics?: boolean; underline?: boolean } = {}): RunSpec[] {
+type InlineFormat = { bold?: boolean; italics?: boolean; underline?: boolean };
+
+function toRunSpec(f: InlineFormat, text: string): RunSpec {
+  return {
+    text,
+    bold: f.bold,
+    italics: f.italics,
+    underline: f.underline ? { type: 'single' } : undefined,
+  };
+}
+
+function collectRuns(node: Node, format: InlineFormat = {}): RunSpec[] {
   const out: RunSpec[] = [];
-  function run(node: Node, f: typeof format) {
+  function run(node: Node, f: InlineFormat) {
     if (node.nodeType === Node.TEXT_NODE) {
       const text = node.textContent || '';
-      if (text) out.push({ ...f, text });
+      if (text) out.push(toRunSpec(f, text));
       return;
     }
     if (node.nodeType !== Node.ELEMENT_NODE) return;
@@ -139,7 +150,7 @@ function runsToParagraphChildren(specs: RunSpec[]) {
  * Convert Quill HTML to docx Paragraph[] and optional numbering config.
  * Preserves paragraphs, line breaks, bold, italic, underline, headings, bullet and numbered lists.
  */
-function htmlToDocxBlocks(html: string): { paragraphs: Paragraph[]; numbering?: { config: Array<{ reference: string; levels: Array<{ level: number; format: string }> }> } } {
+function htmlToDocxBlocks(html: string): { paragraphs: Paragraph[]; numbering?: INumberingOptions } {
   const div = document.createElement('div');
   div.innerHTML = html;
   const paragraphs: Paragraph[] = [];
@@ -148,15 +159,13 @@ function htmlToDocxBlocks(html: string): { paragraphs: Paragraph[]; numbering?: 
   function blockToParagraph(block: Element, opts: { bullet?: boolean; numbering?: boolean; heading?: keyof typeof HeadingLevel } = {}) {
     const runs = collectRuns(block);
     const children = runsToParagraphChildren(runs);
-    const paraOpts: Parameters<typeof Paragraph>[0] = {
+    if (opts.numbering) hasNumberedList = true;
+    const paraOpts = {
       children: children.length ? children : [new TextRun({ text: ' ' })],
+      ...(opts.heading && { heading: HeadingLevel[opts.heading] }),
+      ...(opts.bullet && { bullet: { level: 0 } }),
+      ...(opts.numbering && { numbering: { reference: 'decimal', level: 0 } }),
     };
-    if (opts.heading) paraOpts.heading = HeadingLevel[opts.heading];
-    if (opts.bullet) paraOpts.bullet = { level: 0 };
-    if (opts.numbering) {
-      hasNumberedList = true;
-      paraOpts.numbering = { reference: 'decimal', level: 0 };
-    }
     return new Paragraph(paraOpts);
   }
 
@@ -217,15 +226,15 @@ function htmlToDocxBlocks(html: string): { paragraphs: Paragraph[]; numbering?: 
     paragraphs.push(blockToParagraph(div));
   }
 
-  const numbering = hasNumberedList
-    ? {
+  const numbering: INumberingOptions | undefined = hasNumberedList
+    ? ({
         config: [
           {
             reference: 'decimal',
             levels: [{ level: 0, format: LevelFormat.DECIMAL }],
           },
         ],
-      }
+      } as INumberingOptions)
     : undefined;
 
   return { paragraphs, numbering };
