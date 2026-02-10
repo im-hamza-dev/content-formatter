@@ -215,80 +215,81 @@ export function OutputEditor({
           </p>
         </div>
       </div>
-      <div className="px-5 py-4 flex flex-wrap items-center justify-start gap-2">
-        <button
-          type="button"
-          onClick={handleCleanContent}
-          disabled={isCleaning}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white font-medium text-sm shadow-sm disabled:opacity-60 disabled:pointer-events-none transition-all"
-          title="Clean content (remove emojis, normalize spacing, etc.)"
-        >
-          <Eraser className="w-4 h-4" />
-          {isCleaning ? 'Cleaning…' : 'Clean Content'}
-        </button>
-
-        <button
-          type="button"
-          onClick={handleCopyFormatted}
-          disabled={!hasContent}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium text-sm shadow-sm disabled:opacity-60 disabled:pointer-events-none transition-all"
-          title="Copy formatted content"
-        >
-          {copied ? (
-            <Check className="w-4 h-4" />
-          ) : (
-            <Copy className="w-4 h-4" />
-          )}
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
-
-        <div className="relative" ref={downloadRef}>
+      <div className="px-5 py-4 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setDownloadOpen((o) => !o)}
-            disabled={!hasContent}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white font-medium text-sm shadow-sm disabled:opacity-60 disabled:pointer-events-none transition-all"
-            title="Download as PDF, DOCX, or Text"
+            onClick={handleCleanContent}
+            disabled={isCleaning}
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white font-medium text-sm shadow-sm disabled:opacity-60 disabled:pointer-events-none transition-all"
+            title="Clean content (remove emojis, normalize spacing, etc.)"
           >
-            <Download className="w-4 h-4" />
-            Download
-            <ChevronDown className="w-4 h-4" />
+            <Eraser className="w-4 h-4" />
+            {isCleaning ? 'Cleaning…' : 'Clean Content'}
           </button>
-          {downloadOpen && (
-            <div className="absolute left-0 top-full z-10 mt-1 min-w-[160px] rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-lg py-1">
-              <button
-                type="button"
-                onClick={handleExportPDF}
-                className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <FileText className="w-4 h-4 text-red-500 shrink-0" />
-                PDF
-              </button>
-              <button
-                type="button"
-                onClick={handleExportDOCX}
-                className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <File className="w-4 h-4 text-blue-500 shrink-0" />
-                DOCX
-              </button>
-              <button
-                type="button"
-                onClick={handleExportTXT}
-                className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <FileCode className="w-4 h-4 text-gray-500 shrink-0" />
-                Text
-              </button>
-            </div>
+          {formatError && (
+            <p className="text-sm text-red-600 dark:text-red-400" role="alert">
+              {formatError}
+            </p>
           )}
         </div>
-
-        {formatError && (
-          <p className="text-sm text-red-600 dark:text-red-400" role="alert">
-            {formatError}
-          </p>
-        )}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleCopyFormatted}
+            disabled={!hasContent}
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium text-sm shadow-sm disabled:opacity-60 disabled:pointer-events-none transition-all"
+            title="Copy formatted content"
+          >
+            {copied ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
+            {copied ? 'Copied!' : 'Copy'}
+          </button>
+          <div className="relative" ref={downloadRef}>
+            <button
+              type="button"
+              onClick={() => setDownloadOpen((o) => !o)}
+              disabled={!hasContent}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white font-medium text-sm shadow-sm disabled:opacity-60 disabled:pointer-events-none transition-all"
+              title="Download as PDF, DOCX, or Text"
+            >
+              <Download className="w-4 h-4" />
+              Download
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            {downloadOpen && (
+              <div className="absolute right-0 top-full z-10 mt-1 min-w-[160px] rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-lg py-1">
+                <button
+                  type="button"
+                  onClick={handleExportPDF}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <FileText className="w-4 h-4 text-red-500 shrink-0" />
+                  PDF
+                </button>
+                <button
+                  type="button"
+                  onClick={handleExportDOCX}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <File className="w-4 h-4 text-blue-500 shrink-0" />
+                  DOCX
+                </button>
+                <button
+                  type="button"
+                  onClick={handleExportTXT}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <FileCode className="w-4 h-4 text-gray-500 shrink-0" />
+                  Text
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       <div className="p-5 flex-1 min-h-0 flex flex-col pt-0">
         <div
