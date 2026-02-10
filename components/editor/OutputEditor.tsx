@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { PanelRightOpen, PanelLeftClose, Sparkles } from 'lucide-react';
+import { PanelRightOpen, PanelLeftClose, Sparkles, Eraser } from 'lucide-react';
 import { useContentStore } from '@/store/contentStore';
 import 'react-quill/dist/quill.snow.css';
 
@@ -24,14 +24,20 @@ export function OutputEditor({
   extended = false,
   onExtendedChange,
 }: OutputEditorProps) {
-  const { formattedContent, setFormattedContent, cleanedContent } = useContentStore();
+  const { formattedContent, setFormattedContent, cleanedContent, cleanContentFromText, isCleaning } = useContentStore();
   const [formatting, setFormatting] = useState(false);
   const [formatError, setFormatError] = useState<string | null>(null);
+
+  const handleCleanContent = () => {
+    setFormatError(null);
+    const plainText = stripHtmlToText(formattedContent);
+    cleanContentFromText(plainText);
+  };
 
   const handleFormatContent = async () => {
     const contentToFormat = cleanedContent?.trim() || stripHtmlToText(formattedContent);
     if (!contentToFormat) {
-      setFormatError('Add or paste content in the input box first, then click Format Content.');
+      setFormatError('Paste content in the editor first, then use Clean Content or Format Content.');
       return;
     }
     setFormatError(null);
@@ -99,7 +105,17 @@ export function OutputEditor({
           </button>
         )}
       </div>
-      <div className="px-5 pb-2 flex flex-col gap-2">
+      <div className="px-5 pb-2 flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onClick={handleCleanContent}
+          disabled={isCleaning}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white font-medium text-sm shadow-sm disabled:opacity-60 disabled:pointer-events-none transition-all"
+          title="Clean content (remove emojis, normalize spacing, etc.)"
+        >
+          <Eraser className="w-4 h-4" />
+          {isCleaning ? 'Cleaning…' : 'Clean Content'}
+        </button>
         <button
           type="button"
           onClick={handleFormatContent}
@@ -124,7 +140,7 @@ export function OutputEditor({
             onChange={setFormattedContent}
             modules={modules}
             formats={formats}
-            placeholder="Formatted document will appear here. Use the toolbar to format document, then export."
+            placeholder="Paste your content here. Click Clean Content to clean text, or Format Content for AI formatting. Then use the toolbar and export."
             className="min-h-[420px]"
           />
         </div>

@@ -2,24 +2,18 @@ import { useContentStore } from '@/store/contentStore';
 
 export function useContentCleaner() {
   const {
-    rawInput,
     cleanedContent,
     formattedContent,
     isCleaning,
-    setRawInput,
-    setCleanedContent,
     setFormattedContent,
-    cleanContent,
+    cleanContentFromText,
   } = useContentStore();
 
   return {
-    rawInput,
     cleanedContent,
     formattedContent,
     isCleaning,
-    setRawInput,
-    setCleanedContent,
     setFormattedContent,
-    cleanContent,
+    cleanContentFromText,
   };
 }

@@ -10,7 +10,6 @@ import {
   ListChecks,
   FileEdit,
 } from 'lucide-react';
-import { InputBox } from '@/components/editor/InputBox';
 import { OutputEditor } from '@/components/editor/OutputEditor';
 import { ExportActions } from '@/components/actions/ExportActions';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -125,24 +124,11 @@ export default function Home() {
           Content formatting tool: format document and export to PDF, DOCX, TXT.
           Ai content cleaner for clean text.
         </h2>
-        <div
-          className="tool-grid mb-8 min-w-0"
-          style={
-            {
-              '--tool-col-a': outputExtended ? '30fr' : '40fr',
-              '--tool-col-b': outputExtended ? '70fr' : '60fr',
-            } as React.CSSProperties
-          }
-        >
-          <div className="min-w-0">
-            <InputBox />
-          </div>
-          <div className="min-w-0">
-            <OutputEditor
-              extended={outputExtended}
-              onExtendedChange={setOutputExtended}
-            />
-          </div>
+        <div className="mb-8 min-w-0 max-w-4xl mx-auto">
+          <OutputEditor
+            extended={outputExtended}
+            onExtendedChange={setOutputExtended}
+          />
         </div>
 
         <div className="mb-16">
