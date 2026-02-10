@@ -18,6 +18,11 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     keywords,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true },
+    },
     icons: {
       icon: '/contentformatter.png',
       apple: '/contentformatter.png',
