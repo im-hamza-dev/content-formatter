@@ -79,7 +79,7 @@ export default function Home() {
           </div>
 
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
-            Format Document & Export
+            Format Content & Export
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
               Like Google Docs
             </span>
