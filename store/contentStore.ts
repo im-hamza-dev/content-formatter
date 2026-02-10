@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { cleanText } from '@/lib/cleanText';
+import { cleanHtmlContent, htmlToPlainText } from '@/lib/cleanHtml';
 
 function escapeHtml(text: string) {
   return text
@@ -37,8 +38,10 @@ interface ContentStore {
   formattedContent: string;
   isCleaning: boolean;
   setFormattedContent: (content: string) => void;
-  /** Clean content: pass plain text (e.g. from editor); result is set as formatted + cleaned content. */
+  /** Clean content from plain text (converts to HTML, loses formatting). */
   cleanContentFromText: (plainText: string) => void;
+  /** Clean content in place: only remove symbols/icons and double lines; keeps formatting. */
+  cleanContentFromHtml: (html: string) => void;
 }
 
 export const useContentStore = create<ContentStore>((set) => ({
@@ -66,6 +69,22 @@ export const useContentStore = create<ContentStore>((set) => ({
       });
     } catch (error) {
       console.error('Error cleaning content:', error);
+      set({ isCleaning: false });
+    }
+  },
+
+  cleanContentFromHtml: (html: string) => {
+    if (!html?.trim()) return;
+    set({ isCleaning: true });
+    try {
+      const cleanedHtml = cleanHtmlContent(html);
+      set({
+        formattedContent: cleanedHtml,
+        cleanedContent: htmlToPlainText(cleanedHtml),
+        isCleaning: false,
+      });
+    } catch (error) {
+      console.error('Error cleaning HTML content:', error);
       set({ isCleaning: false });
     }
   },

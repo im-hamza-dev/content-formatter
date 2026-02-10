@@ -24,20 +24,28 @@ export function OutputEditor({
   extended = false,
   onExtendedChange,
 }: OutputEditorProps) {
-  const { formattedContent, setFormattedContent, cleanedContent, cleanContentFromText, isCleaning } = useContentStore();
+  const {
+    formattedContent,
+    setFormattedContent,
+    cleanedContent,
+    cleanContentFromHtml,
+    isCleaning,
+  } = useContentStore();
   const [formatting, setFormatting] = useState(false);
   const [formatError, setFormatError] = useState<string | null>(null);
 
   const handleCleanContent = () => {
     setFormatError(null);
-    const plainText = stripHtmlToText(formattedContent);
-    cleanContentFromText(plainText);
+    cleanContentFromHtml(formattedContent);
   };
 
   const handleFormatContent = async () => {
-    const contentToFormat = cleanedContent?.trim() || stripHtmlToText(formattedContent);
+    const contentToFormat =
+      cleanedContent?.trim() || stripHtmlToText(formattedContent);
     if (!contentToFormat) {
-      setFormatError('Paste content in the editor first, then use Clean Content or Format Content.');
+      setFormatError(
+        'Paste content in the editor first, then use Clean Content or Format Content.',
+      );
       return;
     }
     setFormatError(null);
@@ -89,23 +97,8 @@ export function OutputEditor({
             Content formatting toolbar then export PDF, DOCX, or TXT
           </p>
         </div>
-        {onExtendedChange && (
-          <button
-            type="button"
-            onClick={() => onExtendedChange(!extended)}
-            className="p-2 rounded-lg hover:bg-white/50 dark:hover:bg-black/20 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-            title={extended ? 'Reset to 50/50' : 'Extend output (70% width)'}
-            aria-label={extended ? 'Reset layout' : 'Extend output'}
-          >
-            {extended ? (
-              <PanelLeftClose className="w-5 h-5" />
-            ) : (
-              <PanelRightOpen className="w-5 h-5" />
-            )}
-          </button>
-        )}
       </div>
-      <div className="px-5 pb-2 flex flex-wrap items-center gap-2">
+      <div className="px-5 py-4 flex flex-wrap items-center justify-start gap-2">
         <button
           type="button"
           onClick={handleCleanContent}
@@ -116,7 +109,7 @@ export function OutputEditor({
           <Eraser className="w-4 h-4" />
           {isCleaning ? 'Cleaning…' : 'Clean Content'}
         </button>
-        <button
+        {/* <button
           type="button"
           onClick={handleFormatContent}
           disabled={formatting}
@@ -125,7 +118,7 @@ export function OutputEditor({
         >
           <Sparkles className="w-4 h-4" />
           {formatting ? 'Formatting…' : 'Format Content'}
-        </button>
+        </button> */}
         {formatError && (
           <p className="text-sm text-red-600 dark:text-red-400" role="alert">
             {formatError}

@@ -7,6 +7,7 @@ export function useContentCleaner() {
     isCleaning,
     setFormattedContent,
     cleanContentFromText,
+    cleanContentFromHtml,
   } = useContentStore();
 
   return {
@@ -15,5 +16,6 @@ export function useContentCleaner() {
     isCleaning,
     setFormattedContent,
     cleanContentFromText,
+    cleanContentFromHtml,
   };
 }

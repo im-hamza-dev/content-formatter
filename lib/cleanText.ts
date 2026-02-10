@@ -1,8 +1,9 @@
-export function cleanText(text: string): string {
-  if (!text || typeof text !== 'string') {
-    return '';
-  }
-
+/**
+ * Light clean: only remove symbols, icons/emojis, and collapse multiple newlines.
+ * Does not change structure or other formatting. Use for cleaning inside rich HTML.
+ */
+export function lightCleanText(text: string): string {
+  if (!text || typeof text !== 'string') return text;
   let cleaned = text;
 
   cleaned = cleaned.replace(/[\u{1F600}-\u{1F64F}]/gu, ''); // Emoticons
@@ -52,16 +53,27 @@ export function cleanText(text: string): string {
   cleaned = cleaned.replace(/[◆◇◈◉◊○●]/g, ''); // Shapes
   cleaned = cleaned.replace(/[→←↑↓↔]/g, ''); // Arrows
   cleaned = cleaned.replace(/[✓✔✗✘]/g, ''); // Checkmarks
-  cleaned = cleaned.replace(/[•◦‣⁃▪▫]/g, ''); // Bullets (will normalize later)
+  cleaned = cleaned.replace(/[•◦‣⁃▪▫]/g, ''); // Bullets
   cleaned = cleaned.replace(/\u2014/g, ' '); // Em dash — → space
+
+  cleaned = cleaned.replace(/\r\n/g, '\n');
+  cleaned = cleaned.replace(/\r/g, '\n');
+  cleaned = cleaned.replace(/\n{3,}/g, '\n\n'); // Collapse 3+ newlines to double (remove double/extra lines)
+
+  return cleaned;
+}
+
+export function cleanText(text: string): string {
+  if (!text || typeof text !== 'string') {
+    return '';
+  }
+
+  let cleaned = lightCleanText(text);
 
   cleaned = cleaned.replace(/[-]{3,}/g, '---');
   cleaned = cleaned.replace(/[*]{3,}/g, '***');
   cleaned = cleaned.replace(/[_]{3,}/g, '___');
   cleaned = cleaned.replace(/[=]{3,}/g, '===');
-
-  cleaned = cleaned.replace(/\r\n/g, '\n'); // Windows to Unix
-  cleaned = cleaned.replace(/\r/g, '\n'); // Mac to Unix
 
   cleaned = cleaned.replace(/^\n+/, '');
   cleaned = cleaned.replace(/\n+$/, '');
