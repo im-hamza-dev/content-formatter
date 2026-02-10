@@ -67,13 +67,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <header className="sticky top-0 z-5 bg-transparent">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-end">
-          <ThemeToggle />
-        </div>
-      </header>
+      <div className="sticky top-0 z-50 max-w-7xl mx-auto px-4 py-4 flex justify-end">
+        <ThemeToggle />
+      </div>
 
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-900 dark:via-gray-900 dark:to-purple-900 py-10 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-900 dark:via-gray-900 dark:to-purple-900 py-1 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm mb-6">
             <FileText className="w-4 h-4" />
@@ -93,7 +91,7 @@ export default function Home() {
             TXT. Format document in one place no sign-up required.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <div className="flex flex-wrap justify-center gap-4 mb-2">
             <div className="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm">
               <FileText className="w-5 h-5 text-green-500" />
               <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -131,9 +129,9 @@ export default function Home() {
           />
         </div>
 
-        <div className="mb-16">
+        {/* <div className="mb-16">
           <ExportActions />
-        </div>
+        </div> */}
       </section>
 
       <section className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 py-20 px-4">

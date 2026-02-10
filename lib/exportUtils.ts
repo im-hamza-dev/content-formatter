@@ -240,13 +240,27 @@ function sanitizeColorsForPDF(html: string): string {
 }
 
 /**
- * Copy formatted content (HTML) to clipboard
+ * Copy formatted content (HTML) to clipboard so pasting preserves formatting (e.g. in Word, Google Docs).
+ * Writes both text/html and text/plain so rich editors use HTML and plain fields get stripped text.
  */
 export async function copyFormattedContent(html: string): Promise<void> {
+  const plain = htmlToPlainText(html);
+  try {
+    if (navigator.clipboard && typeof navigator.clipboard.write === 'function') {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([plain], { type: 'text/plain' }),
+        }),
+      ]);
+      return;
+    }
+  } catch {
+    // Fall through to writeText fallback
+  }
   try {
     await navigator.clipboard.writeText(html);
-  } catch (error) {
-    // Fallback for older browsers
+  } catch {
     const textArea = document.createElement('textarea');
     textArea.value = html;
     textArea.style.position = 'fixed';
