@@ -77,7 +77,7 @@ export function HomeContent() {
             <span>Free text formatter online</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
             AI Text Cleaner & Online Text Formatter
           </h1>
 

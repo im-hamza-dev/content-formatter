@@ -117,6 +117,27 @@
 .dark .quill-wrapper .ql-toolbar {
   background-color: var(--color-gray-800);
 }
+.dark .quill-wrapper .ql-toolbar .ql-stroke {
+  stroke: rgba(255, 255, 255, 0.7);
+}
+.dark .quill-wrapper .ql-toolbar .ql-fill {
+  fill: rgba(255, 255, 255, 0.7);
+}
+.dark .quill-wrapper .ql-toolbar .ql-picker {
+  color: rgba(255, 255, 255, 0.9);
+}
+.dark .quill-wrapper .ql-toolbar button:hover .ql-stroke,
+.dark .quill-wrapper .ql-toolbar button.ql-active .ql-stroke {
+  stroke: rgba(255, 255, 255, 1);
+}
+.dark .quill-wrapper .ql-toolbar button:hover .ql-fill,
+.dark .quill-wrapper .ql-toolbar button.ql-active .ql-fill {
+  fill: rgba(255, 255, 255, 1);
+}
+.dark .quill-wrapper .ql-toolbar button:hover,
+.dark .quill-wrapper .ql-toolbar button.ql-active {
+  color: #fff;
+}
 
 .quill-wrapper .ql-container {
   border-bottom-left-radius: 8px;
