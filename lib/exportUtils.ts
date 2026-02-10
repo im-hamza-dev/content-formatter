@@ -383,10 +383,9 @@ export async function exportAsPDF(content: string, filename: string = 'cleaned-c
       document.body.appendChild(wrapper);
 
       const canvas = await html2canvas(wrapper, {
-        scale: 2,
+        scale: 1.5,
         useCORS: true,
         backgroundColor: '#ffffff',
-        // If any element still ends up with unsupported colors, default it
         onclone: (clonedDoc) => {
           const root = clonedDoc.documentElement;
           root.style.setProperty('--background', '#ffffff');
@@ -394,29 +393,35 @@ export async function exportAsPDF(content: string, filename: string = 'cleaned-c
         },
       });
 
-      const imgData = canvas.toDataURL('image/png');
-
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
-      const margin = 32;
+      const margin = 32; // Top and bottom page margin (pt) on every page
       const usableWidth = pageWidth - margin * 2;
       const usableHeight = pageHeight - margin * 2;
 
-      const imgWidth = usableWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      // Slice so we don't cut through lines: use ~96% of page height per slice so boundaries fall between lines.
+      const scale = usableWidth / canvas.width;
+      const sliceHeightPx = Math.floor((usableHeight / scale) * 0.96);
+      const numPages = sliceHeightPx > 0 ? Math.ceil(canvas.height / sliceHeightPx) : 1;
 
-      let heightLeft = imgHeight;
-      let position = margin;
+      const jpegQuality = 0.88;
 
-      pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
-      heightLeft -= usableHeight;
-
-      while (heightLeft > 0) {
-        pdf.addPage();
-        // Shift the same full image up so the next slice appears on the new page
-        position = margin - (imgHeight - heightLeft);
-        pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
-        heightLeft -= usableHeight;
+      for (let i = 0; i < numPages; i++) {
+        if (i > 0) pdf.addPage();
+        const srcY = i * sliceHeightPx;
+        const sliceH = Math.min(sliceHeightPx, canvas.height - srcY);
+        const sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = sliceH;
+        const ctx = sliceCanvas.getContext('2d');
+        if (!ctx) continue;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+        ctx.drawImage(canvas, 0, srcY, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+        const sliceData = sliceCanvas.toDataURL('image/jpeg', jpegQuality);
+        const slicePdfHeight = sliceH * scale;
+        const yPos = i === 0 ? 0 : margin;
+        pdf.addImage(sliceData, 'JPEG', margin, yPos, usableWidth, slicePdfHeight);
       }
 
       pdf.save(filename);

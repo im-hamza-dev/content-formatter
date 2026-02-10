@@ -119,7 +119,10 @@ export function OutputEditor({
       const reader = new FileReader();
       reader.onload = (e) => {
         const dataUrl = e.target?.result as string;
-        const range = editor.getSelection(true) ?? { index: editor.getLength(), length: 0 };
+        const range = editor.getSelection(true) ?? {
+          index: editor.getLength(),
+          length: 0,
+        };
         editor.insertEmbed(range.index, 'image', dataUrl);
         editor.setSelection(range.index + 1);
       };
@@ -172,7 +175,7 @@ export function OutputEditor({
         handlers: { image: imageHandler },
       },
     }),
-    [imageHandler]
+    [imageHandler],
   );
 
   const formats = useMemo(
@@ -194,7 +197,7 @@ export function OutputEditor({
       'link',
       'image',
     ],
-    []
+    [],
   );
 
   return (
@@ -205,7 +208,10 @@ export function OutputEditor({
             Format, clean & export
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Paste here, then format with the toolbar, clean symbols and extra lines, and export or copy as PDF, DOCX, or text.
+            Paste here, then format with the toolbar, clean symbols and extra
+            lines, and export or copy as PDF, DOCX, or text.
+            <br />
+            Undo changes with <strong>Ctrl+Z</strong>.
           </p>
         </div>
       </div>
@@ -285,7 +291,10 @@ export function OutputEditor({
         )}
       </div>
       <div className="p-5 flex-1 min-h-0 flex flex-col pt-0">
-        <div ref={quillWrapperRef} className="quill-wrapper flex-1 min-h-0 flex flex-col">
+        <div
+          ref={quillWrapperRef}
+          className="quill-wrapper flex-1 min-h-0 flex flex-col"
+        >
           <ReactQuill
             theme="snow"
             value={formattedContent}
