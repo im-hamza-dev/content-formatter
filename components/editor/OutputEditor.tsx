@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import {
   Eraser,
@@ -51,6 +51,7 @@ export function OutputEditor({
   const [downloadOpen, setDownloadOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const downloadRef = useRef<HTMLDivElement>(null);
+  const quillWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!downloadOpen) return;
@@ -103,6 +104,30 @@ export function OutputEditor({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const imageHandler = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    const Quill = require('quill');
+    const container = quillWrapperRef.current?.querySelector('.ql-container');
+    const editor = container ? Quill.find(container) : null;
+    if (!editor) return;
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.onchange = () => {
+      const file = input.files?.[0];
+      if (!file || !/^image\//.test(file.type)) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        const range = editor.getSelection(true) ?? { index: editor.getLength(), length: 0 };
+        editor.insertEmbed(range.index, 'image', dataUrl);
+        editor.setSelection(range.index + 1);
+      };
+      reader.readAsDataURL(file);
+    };
+    input.click();
+  }, []);
+
   const handleFormatContent = async () => {
     const contentToFormat =
       cleanedContent?.trim() || stripHtmlToText(formattedContent);
@@ -130,25 +155,47 @@ export function OutputEditor({
     }
   };
 
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      ['code-block'],
-      ['clean'],
-    ],
-  };
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ color: [] }, { background: [] }],
+          ['blockquote', 'code-block', 'code'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ indent: '-1' }, { indent: '+1' }],
+          [{ align: [] }],
+          ['link', 'image'],
+          ['clean'],
+        ],
+        handlers: { image: imageHandler },
+      },
+    }),
+    [imageHandler]
+  );
 
-  const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'list',
-    'bullet',
-    'code-block',
-  ];
+  const formats = useMemo(
+    () => [
+      'header',
+      'bold',
+      'italic',
+      'underline',
+      'strike',
+      'color',
+      'background',
+      'blockquote',
+      'code-block',
+      'code',
+      'list',
+      'bullet',
+      'indent',
+      'align',
+      'link',
+      'image',
+    ],
+    []
+  );
 
   return (
     <div className="tool-card-glow bg-white dark:bg-gray-800 rounded-2xl border border-blue-200/50 dark:border-blue-500/20 overflow-hidden h-full flex flex-col">
@@ -238,7 +285,7 @@ export function OutputEditor({
         )}
       </div>
       <div className="p-5 flex-1 min-h-0 flex flex-col pt-0">
-        <div className="quill-wrapper flex-1 min-h-0 flex flex-col">
+        <div ref={quillWrapperRef} className="quill-wrapper flex-1 min-h-0 flex flex-col">
           <ReactQuill
             theme="snow"
             value={formattedContent}
