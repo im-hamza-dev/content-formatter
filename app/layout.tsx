@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     'Free AI content cleaner and text formatter online. Clean AI-generated text, beautify text, and format documents easily. Export to PDF, DOCX, and TXT. No sign-up required.';
   const keywords =
-    'ai cleaner, ai content cleaner, ai text cleaner, text formatter online, beautify text, format document';
+    'ai cleaner, ai content cleaner, ai text cleaner, text formatter online, beautify text, format document, text formatter, document formatter, wyiwyg editor';
 
   return {
     metadataBase: new URL(siteUrl),
