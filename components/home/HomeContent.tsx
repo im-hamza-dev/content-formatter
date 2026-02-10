@@ -66,6 +66,13 @@ export function HomeContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      {/* Accessibility & SEO: Skip link for keyboard/screen reader users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >
+        Skip to main content
+      </a>
       <div className="fixed top-0 z-50 max-w-7xl mx-auto px-4 py-4 flex justify-end right-0">
         <ThemeToggle />
       </div>
@@ -81,12 +88,20 @@ export function HomeContent() {
             AI Text Cleaner & Online Text Formatter
           </h1>
 
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-4 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-6 max-w-3xl mx-auto leading-relaxed">
             Use our AI content cleaner and text formatter online to clean
             AI-generated text, format documents easily, and beautify text in one
             click. Export to PDF, DOCX, and TXT—no sign-up required.
           </p>
-
+          <p className="mb-6">
+            <a
+              href="#main-content"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 min-h-[48px] min-w-[48px]"
+              aria-label="Try the editor now"
+            >
+              Try it free
+            </a>
+          </p>
           <div className="flex flex-wrap justify-center gap-4 mb-2">
             <p className="sr-only">
               Key actions: clean AI-generated text, format documents online,
@@ -108,7 +123,7 @@ export function HomeContent() {
         </div>
       </header>
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <section
           className="max-w-7xl mx-auto px-4 pt-6 pb-10"
           aria-labelledby="editor-heading"
@@ -195,6 +210,59 @@ export function HomeContent() {
                 <li>Beautify text in one click</li>
                 <li>Format document online with no account</li>
               </ul>
+            </section>
+
+            {/* SEO: FAQ section for long-tail keywords and featured snippets */}
+            <section className="mb-16" aria-labelledby="faq-heading">
+              <h2
+                id="faq-heading"
+                className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center"
+              >
+                Frequently asked questions
+              </h2>
+              <dl className="max-w-3xl mx-auto space-y-6">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <dt className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                    What is an AI text cleaner?
+                  </dt>
+                  <dd className="text-gray-600 dark:text-gray-400">
+                    An AI text cleaner removes clutter from AI-generated
+                    content: emojis, extra symbols, and inconsistent spacing.
+                    Our tool cleans text so you get professional copy ready to
+                    format and export.
+                  </dd>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <dt className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                    Is this text formatter online free?
+                  </dt>
+                  <dd className="text-gray-600 dark:text-gray-400">
+                    Yes. The AI text cleaner and document formatter is free. You
+                    can clean text, beautify content, format documents, and
+                    export to PDF, DOCX, or TXT without signing up.
+                  </dd>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <dt className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                    Can I export to Word or Google Docs?
+                  </dt>
+                  <dd className="text-gray-600 dark:text-gray-400">
+                    Yes. Download as DOCX for Word, or use Copy to paste
+                    formatted content into Google Docs. Format document once and
+                    use it anywhere.
+                  </dd>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <dt className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                    Is my content stored or sent to a server?
+                  </dt>
+                  <dd className="text-gray-600 dark:text-gray-400">
+                    No. Cleaning and formatting run in your browser. Your text
+                    never leaves your device unless you use optional AI
+                    formatting, which is processed securely.
+                  </dd>
+                </div>
+              </dl>
             </section>
 
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
