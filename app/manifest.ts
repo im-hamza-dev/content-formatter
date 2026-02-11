@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://contentformatter.com';
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.contentformatter.com';
 
 // SEO & PWA: Web app manifest for installability and rich results
 export default function manifest(): MetadataRoute.Manifest {

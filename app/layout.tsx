@@ -3,7 +3,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import './globals.css';
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://contentformatter.com';
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.contentformatter.com';
 
 // SEO: Title under 60 chars with primary keyword for SERP click-through
 const title =

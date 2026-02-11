@@ -1,7 +1,7 @@
 import { HomeContent } from '@/components/home/HomeContent';
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://contentformatter.com';
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.contentformatter.com';
 
 // SEO: WebApplication schema helps search engines understand the product (rich results, eligibility for app features)
 const webApplicationSchema = {
@@ -34,7 +34,8 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'AI Text Cleaner & Formatter',
   url: siteUrl,
-  description: 'Free online tool to clean AI-generated text, format documents, and export to PDF, DOCX, or TXT.',
+  description:
+    'Free online tool to clean AI-generated text, format documents, and export to PDF, DOCX, or TXT.',
 };
 
 // SEO: BreadcrumbList helps search engines show breadcrumbs in SERPs (single-page: Home)
