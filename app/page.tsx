@@ -1,7 +1,7 @@
 import { HomeContent } from '@/components/home/HomeContent';
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://www.contentformatter.com';
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://contentformatter.com';
 
 // SEO: WebApplication schema helps search engines understand the product (rich results, eligibility for app features)
 const webApplicationSchema = {
